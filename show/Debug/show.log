@@ -1,0 +1,13 @@
+﻿  base64.cpp
+c:\projects\cpp\show\show\base64.cpp(66): warning C4267: “=”: 从“size_t”转换到“BYTE”，可能丢失数据
+c:\projects\cpp\show\show\base64.cpp(83): warning C4267: “=”: 从“size_t”转换到“BYTE”，可能丢失数据
+  源.cpp
+c:\projects\cpp\show\show\opencv2\objdetect\aruco_board.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+  正在生成代码...
+源.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall cv::Mat::Mat(void)" (??0Mat@cv@@QAE@XZ)，该符号在函数 "void __cdecl show(class std::vector<class std::shared_ptr<struct ObjectBase>,class std::allocator<class std::shared_ptr<struct ObjectBase> > > &)" (?show@@YAXAAV?$vector@V?$shared_ptr@UObjectBase@@@std@@V?$allocator@V?$shared_ptr@UObjectBase@@@std@@@2@@std@@@Z) 中被引用
+源.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall cv::Mat::Mat(class cv::Mat const &)" (??0Mat@cv@@QAE@ABV01@@Z)，该符号在函数 "public: class cv::Mat __thiscall Object<class cv::Mat>::inner(void)" (?inner@?$Object@VMat@cv@@@@QAE?AVMat@cv@@XZ) 中被引用
+源.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall cv::Mat::~Mat(void)" (??1Mat@cv@@QAE@XZ)，该符号在函数 "void __cdecl show(class std::vector<class std::shared_ptr<struct ObjectBase>,class std::allocator<class std::shared_ptr<struct ObjectBase> > > &)" (?show@@YAXAAV?$vector@V?$shared_ptr@UObjectBase@@@std@@V?$allocator@V?$shared_ptr@UObjectBase@@@std@@@2@@std@@@Z) 中被引用
+源.obj : error LNK2019: 无法解析的外部符号 "public: class cv::Mat & __thiscall cv::Mat::operator=(class cv::Mat &&)" (??4Mat@cv@@QAEAAV01@$$QAV01@@Z)，该符号在函数 "void __cdecl show(class std::vector<class std::shared_ptr<struct ObjectBase>,class std::allocator<class std::shared_ptr<struct ObjectBase> > > &)" (?show@@YAXAAV?$vector@V?$shared_ptr@UObjectBase@@@std@@V?$allocator@V?$shared_ptr@UObjectBase@@@std@@@2@@std@@@Z) 中被引用
+源.obj : error LNK2019: 无法解析的外部符号 "bool __cdecl cv::imencode(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class cv::debug_build_guard::_InputArray const &,class std::vector<unsigned char,class std::allocator<unsigned char> > &,class std::vector<int,class std::allocator<int> > const &)" (?imencode@cv@@YA_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@ABV_InputArray@debug_build_guard@1@AAV?$vector@EV?$allocator@E@std@@@3@ABV?$vector@HV?$allocator@H@std@@@3@@Z)，该符号在函数 "class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > __cdecl mat_to_base64(class cv::Mat const &)" (?mat_to_base64@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@ABVMat@cv@@@Z) 中被引用
+lib\opencv_world470.lib : warning LNK4272: 库计算机类型“x64”与目标计算机类型“x86”冲突
+C:\Projects\cpp\show\Debug\show.dll : fatal error LNK1120: 5 个无法解析的外部命令
