@@ -1,10 +1,9 @@
 #pragma once
-#include<string>
-#include<opencv2/opencv.hpp>
-#include<vector>
+#include"opencv2/opencv.hpp"
 struct OperatorInterfaceBase {
 public:
 	virtual ~OperatorInterfaceBase() {}
+	virtual std::string to_string() = 0;
 };
 
 template<typename T>
@@ -16,11 +15,10 @@ public:
 	T		 data();
 	T&		 data_ref();
 	const T& data_const_ref();
-	const std::string type() { return type_; }
-	const std::string name() { return name_; }
+	const std::string type() { return type; }
 private:
-	std::string	name_;
-	std::string	type_;
+	const std::string	name_;
+	const std::string	type_;
 	T* ptr;
 };
 
@@ -57,6 +55,7 @@ T& OperatorInterface<T>::data_ref() {
 	return *ptr;
 }
 
+
 template<typename T>
 T get_data(ParamPtr param_ptr) {
 	return dynamic_cast<OperatorInterface<T>*>(param_ptr.get())->data();
@@ -73,12 +72,7 @@ const T& get_data_const_ref(ParamPtr param_ptr) {
 }
 
 template<typename T>
-const std::string get_name(ParamPtr param_ptr) {
-	return dynamic_cast<OperatorInterface<T>*>(param_ptr.get())->name();
-}
-
-template<typename T>
-const std::string get_type(ParamPtr param_ptr) {
+const T& get_type(ParamPtr param_ptr) {
 	return dynamic_cast<OperatorInterface<T>*>(param_ptr.get())->type();
 }
 
@@ -86,3 +80,4 @@ template<typename T>
 ParamPtr make_param(std::string name, std::string type, T* value_ptr) {
 	return ParamPtr(new OperatorInterface<T>(name, type, value_ptr));
 }
+
