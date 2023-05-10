@@ -81,3 +81,19 @@ ParamPtr make_param(std::string name, std::string type, T* value_ptr) {
 	return ParamPtr(new OperatorInterface<T>(name, type, value_ptr));
 }
 
+//template <> inline std::string OperatorInterface<std::string>::to_string() {
+// return fmt::format(R"({{"type": "string", "content": "{}"}})", this->data_const_ref());
+//}
+//
+//template <> inline std::string OperatorInterface<int>::to_string() {
+// return fmt::format(R"({{"type": "int", "content": "{}"}})", this->data());
+//}
+//
+//template <> inline std::string OperatorInterface<double>::to_string() {
+// return fmt::format(R"({{"type": "double", "content": "{}"}})", this->data());
+//}
+//
+//template <> inline std::string OperatorInterface<cv::Size>::to_string() {
+// return fmt::format(R"({{"type": "Size", "content": "{},{}"}})", this->data().width, this->data().height);
+//}
+

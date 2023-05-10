@@ -5,6 +5,8 @@
 #include<vector>
 #include<unordered_map>
 #include<string>
+#include<vector>
+#include "fmt/core.h"
 
 #define EXPORT extern "C" __declspec(dllexport)
 
@@ -14,6 +16,15 @@ std::string mat_to_base64(const cv::Mat& img) {
 	auto* enc_msg = reinterpret_cast<unsigned char*>(buf.data());
 	return base64_encode(enc_msg, buf.size());
 }
+
+std::string point_to_string(const cv::Point& point ) {
+	return fmt::format(R"({{"type": "Point", "content": "{},{}"}})", point.x, point.y);
+}
+
+std::string rect_to_string(const cv::Rect& rect) {
+	return fmt::format(R"({{"type": "Rect", "content": "{},{},{},{}"}})", rect.x,rect.y,rect.width,rect.height);
+}
+
 
 
 jstring stoJstring(JNIEnv* env, const char* pat)
@@ -49,6 +60,17 @@ EXPORT void show(JNIEnv* ENV, jobject LISTENER, jmethodID METHOD,std::string typ
 	else if (type == "string") {
 		eventName = "revStr";
 		msg = get_data<std::string>(params[0]);
+	}
+	else if (type == "Point") {
+		eventName = "revPoint";
+		std::vector<cv::Point> vec_point = get_data<std::vector<cv::Point>>(params[0]);
+		for(cv::Point p:vec_point)
+			msg+=point_to_string(p);
+	}
+	else if (type == "Rect") {
+		eventName = "revRect";
+		cv::Rect point = get_data<cv::Rect>(params[0]);
+		msg = rect_to_string(point);
 	}
 	ENV->CallVoidMethod(LISTENER, METHOD, stoJstring(ENV, eventName.c_str()), stoJstring(ENV, msg.c_str()));
 }
