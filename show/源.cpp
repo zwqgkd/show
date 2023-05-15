@@ -9,6 +9,15 @@
 #include "fmt/core.h"
 
 #define EXPORT extern "C" __declspec(dllexport)
+jstring stoJstring(JNIEnv* env, const char* pat)
+{
+	jclass strClass = env->FindClass("Ljava/lang/String;");
+	jmethodID ctorID = env->GetMethodID(strClass, "<init>", "([BLjava/lang/String;)V");
+	jbyteArray bytes = env->NewByteArray(strlen(pat));
+	env->SetByteArrayRegion(bytes, 0, strlen(pat), (jbyte*)pat);
+	jstring encoding = env->NewStringUTF("utf-8");
+	return (jstring)env->NewObject(strClass, ctorID, bytes, encoding);
+}
 
 std::string mat_to_base64(const cv::Mat& img) {
 	std::vector<uchar> buf;
@@ -25,18 +34,27 @@ std::string rect_to_string(const cv::Rect& rect) {
 	return fmt::format(R"({{"type": "Rect", "content": "{},{},{},{}"}})", rect.x,rect.y,rect.width,rect.height);
 }
 
-
-
-jstring stoJstring(JNIEnv* env, const char* pat)
-{
-	jclass strClass = env->FindClass("Ljava/lang/String;");
-	jmethodID ctorID = env->GetMethodID(strClass, "<init>", "([BLjava/lang/String;)V");
-	jbyteArray bytes = env->NewByteArray(strlen(pat));
-	env->SetByteArrayRegion(bytes, 0, strlen(pat), (jbyte*)pat);
-	jstring encoding = env->NewStringUTF("utf-8");
-	return (jstring)env->NewObject(strClass, ctorID, bytes, encoding);
+std::string points_to_string(const std::vector<cv::Point>& points) {
+	std::string points_msg = fmt::format(R"({{"type": "Point","eachPoint":[)");
+	for (cv::Point point : points)
+	{
+		points_msg.append(fmt::format(R"({{"x":{},"y":{}}},)", point.x, point.y));
+	}
+	points_msg.pop_back();
+	points_msg.append(fmt::format(R"(]}})"));
+	return points_msg;
 }
 
+std::string rects_to_string(const std::vector<cv::Rect>& rects) {
+	std::string rects_msg = fmt::format(R"({{"type": "Rect","eachRect":[)");
+	for (cv::Rect rect : rects)
+	{
+		rects_msg.append(fmt::format(R"({{"x":{},"y":{},"w":{},"h":{}}},)", rect.x, rect.y, rect.width, rect.height));
+	}
+	rects_msg.pop_back();
+	rects_msg.append(fmt::format(R"(]}})"));
+	return rects_msg;
+}
 
 std::unordered_map<std::string, std::string> explanation_to_event;
 
@@ -71,6 +89,16 @@ EXPORT void show(JNIEnv* ENV, jobject LISTENER, jmethodID METHOD,std::string typ
 		eventName = "revRect";
 		cv::Rect point = get_data<cv::Rect>(params[0]);
 		msg = rect_to_string(point);
+	}
+	else if (type == "vector<Point>") {
+		eventName = "revPoints";
+		std::vector<cv::Point> vec_point = get_data<std::vector<cv::Point>>(params[0]);
+		msg = points_to_string(vec_point);
+	}
+	else if (type == "vector<Rect>") {
+		eventName = "revRects";
+		std::vector < cv::Rect> point = get_data<std::vector < cv::Rect>>(params[0]);
+		msg = rects_to_string(point);
 	}
 	ENV->CallVoidMethod(LISTENER, METHOD, stoJstring(ENV, eventName.c_str()), stoJstring(ENV, msg.c_str()));
 }

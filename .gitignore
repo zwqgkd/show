@@ -1,4 +1,5 @@
 .vs
-show/x64
+show/x64/
 **/jdk-17/
 show/opencv2
+x64/
