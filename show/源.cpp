@@ -56,6 +56,10 @@ std::string rects_to_string(const std::vector<cv::Rect>& rects) {
 	return rects_msg;
 }
 
+std::string rotatedRect_to_string(const cv::RotatedRect& rect) {
+	return fmt::format(R"({{"type": "RotatedRect", "content": "{},{},{},{},{}"}})", rect.center.x,rect.center.y,rect.size.width,rect.size.height,rect.angle);
+}
+
 std::unordered_map<std::string, std::string> explanation_to_event;
 
 
@@ -100,5 +104,11 @@ EXPORT void show(JNIEnv* ENV, jobject LISTENER, jmethodID METHOD,std::string typ
 		std::vector < cv::Rect> point = get_data<std::vector < cv::Rect>>(params[0]);
 		msg = rects_to_string(point);
 	}
+	else if (type == "RotatedRect") {
+		eventName = "revRotatedRect";
+		cv::RotatedRect point = get_data<cv::RotatedRect>(params[0]);
+		msg = rotatedRect_to_string(point);
+	}
 	ENV->CallVoidMethod(LISTENER, METHOD, stoJstring(ENV, eventName.c_str()), stoJstring(ENV, msg.c_str()));
 }
+
